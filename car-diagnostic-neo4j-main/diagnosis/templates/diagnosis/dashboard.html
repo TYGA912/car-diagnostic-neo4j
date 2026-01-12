@@ -1,0 +1,250 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de Bord - {{ brand }} {{ car_model }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #fdfbf7;
+            color: #2c332b;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            background: #ece8e1;
+            padding: 30px;
+            border-right: 1px solid #d3d0c9;
+            z-index: 10;
+        }
+
+        .sidebar h1 {
+            color: #556b2f;
+            font-size: 1.2rem;
+            margin-top: 0;
+            border-bottom: 2px solid #556b2f;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .car-info {
+            margin-bottom: 40px;
+            color: #5d6d5d;
+            font-size: 0.9rem;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(230, 126, 34, 0.1);
+            border-left: 4px solid #e67e22;
+            border-radius: 5px;
+        }
+
+        .status-text {
+            color: #d35400;
+            font-weight: bold;
+            animation: pulse-text 2s infinite;
+        }
+
+        .logout-link {
+            display: block;
+            margin-top: 20px;
+            color: #7f8c8d;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .logout-link:hover {
+            color: #d35400;
+            font-weight: bold;
+        }
+
+        /* Main Visual Area */
+        .visual-area {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f4f1ea;
+        }
+
+        /* Car Schematic */
+        .car-schematic {
+            width: 300px;
+            height: 600px;
+            position: relative;
+            margin: auto;
+        }
+
+        .car-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 10px 20px rgba(85, 107, 47, 0.2));
+        }
+
+        /* Hotspots */
+        .hotspot {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: rgba(230, 126, 34, 0.8);
+            border: 2px solid #d35400;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(230, 126, 34, 0.6);
+            animation: pulse 1.5s infinite;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .hotspot:hover {
+            transform: translate(-50%, -50%) scale(1.3);
+            background: #d35400;
+            z-index: 100;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #556b2f;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .hotspot:hover .tooltip {
+            opacity: 1;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(230, 126, 34, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(230, 126, 34, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(230, 126, 34, 0);
+            }
+        }
+
+        @keyframes pulse-text {
+            0% {
+                opacity: 0.7;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.7;
+            }
+        }
+
+        h3 {
+            color: #556b2f;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="sidebar">
+            <h1>Bonjour, {{ request.session.user_name }}</h1>
+
+            <h2 style="color: #3e4a3d; margin: 0;">{{ brand }} {{ car_model }}</h2>
+            <div class="car-info">
+                Système Connecté<br>
+                Statut: <span style="color:#556b2f; font-weight: bold;">En Ligne</span>
+            </div>
+
+            <div class="status">
+                <div class="status-text">⚠️ ALERTES DÉTECTÉES</div>
+                <p style="font-size: 0.8rem; margin: 10px 0 0 0;">
+                    Le scan a identifié des problèmes potentiels. Cliquez sur les points oranges pour diagnostiquer.
+                </p>
+            </div>
+
+            <div style="margin-top: 40px;">
+                <h3>Composants Actifs</h3>
+                <ul style="list-style: none; padding: 0; font-size: 0.9rem; color: #5d6d5d;">
+                    {% for p in parts %}
+                    <li style="margin-bottom: 10px; display: flex; align-items: center;">
+                        <span
+                            style="width: 8px; height: 8px; background: #e67e22; border-radius: 50%; display: inline-block; margin-right: 10px;"></span>
+                        {{ p.part_name }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <a href="{% url 'logout' %}" class="logout-link">← Déconnexion</a>
+        </div>
+
+        <div class="visual-area">
+            <div class="car-schematic">
+                <!-- Inline SVG Car Outline with new colors -->
+                <svg class="car-svg" viewBox="0 0 300 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Body: Military Green tint -->
+                    <path d="M50 100 C 50 20, 250 20, 250 100 L 250 500 C 250 580, 50 580, 50 500 Z" stroke="#556b2f"
+                        stroke-width="3" fill="rgba(85, 107, 47, 0.05)" />
+                    <path d="M60 180 L 240 180 L 240 420 L 60 420 Z" stroke="#556b2f" stroke-width="1" fill="#fff"
+                        fill-opacity="0.3" />
+                    <path d="M50 140 L 250 140" stroke="#556b2f" stroke-width="1" opacity="0.3" />
+                    <path d="M50 460 L 250 460" stroke="#556b2f" stroke-width="1" opacity="0.3" />
+
+                    <!-- Wheels: Dark Green/Grey -->
+                    <rect x="20" y="110" width="30" height="60" rx="5" fill="#3e4a3d" stroke="#2c332b" />
+                    <rect x="250" y="110" width="30" height="60" rx="5" fill="#3e4a3d" stroke="#2c332b" />
+                    <rect x="20" y="430" width="30" height="60" rx="5" fill="#3e4a3d" stroke="#2c332b" />
+                    <rect x="250" y="430" width="30" height="60" rx="5" fill="#3e4a3d" stroke="#2c332b" />
+                </svg>
+
+                {% for p in parts %}
+                {% if p.x and p.y %}
+                <a href="{% url 'problem_list' car_model=car_model part_name=p.part_name %}" class="hotspot"
+                    style="left: {{ p.x }}%; top: {{ p.y }}%;">
+                    <span class="tooltip">{{ p.part_name }}</span>
+                </a>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div style="position: absolute; bottom: 20px; color: #95a5a6; font-size: 0.8rem;">
+                Vue Schématique v1.2 • Thème Tactique
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

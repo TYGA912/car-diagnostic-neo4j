@@ -1,0 +1,159 @@
+{% load static %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Diagnostic System</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at top, #0a1a2f, #000);
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #00b4ff;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 40px;
+        }
+
+        /* HERO IMAGE */
+        .hero {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0, 180, 255, 0.4);
+        }
+
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        /* CARD */
+        .card {
+            background: rgba(10, 20, 40, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 180, 255, 0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 0 30px rgba(0, 180, 255, 0.4);
+        }
+
+        .card h2 {
+            color: #00b4ff;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            margin: 6px 0;
+            font-size: 14px;
+        }
+
+        /* PART IMAGE */
+        .part-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 0 15px rgba(0, 180, 255, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 13px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1> Car Diagnostic System</h1>
+   
+
+    <!-- HERO CAR IMAGE -->
+    <div class="hero">
+        <img src="{% static 'diagnosis/images/C.jpg' %}" alt="Toyota Corolla">
+    </div>
+
+    <div class="grid">
+
+        <!-- CAR -->
+        <div class="card">
+            <h2> Car</h2>
+            <p><strong>Brand:</strong> {{ car.brand }}</p>
+            <p><strong>Model:</strong> {{ car.model }}</p>
+            <p><strong>Year:</strong> {{ car.year }}</p>
+            <p><strong>Engine:</strong> {{ car.engine_type }}</p>
+
+        </div>
+
+        <!-- PART -->
+         <div class="card">
+            <h2> Part</h2>
+            <img class="part-image"
+                    src="{% static 'diagnosis/images/brake.jpg' %}"
+                    alt="Brake System">
+            <p><strong>Name:</strong> {{ part.name }}</p>
+        </div>
+
+        <!-- PROBLEM -->
+        <div class="card">
+            <h2> Problem</h2>
+            <p><strong>Description:</strong> {{ problem.description }}</p>
+            <p><strong>Severity:</strong> {{ problem.severity }}</p>
+        </div>
+
+        <!-- SOLUTION -->
+        <div class="card">
+            <h2> Solution</h2>
+            <p><strong>Description:</strong> {{ solution.description }}</p>
+            <p><strong>Cost:</strong> {{ solution.cost_range }}</p>
+        </div>
+
+    </div>
+
+    <footer>
+        © 2025 Car Diagnostic System | Neo4j + Django
+    </footer>
+
+</div>
+
+</body>
+</html>

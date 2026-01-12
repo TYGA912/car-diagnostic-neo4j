@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Problèmes - {{ part_name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #fdfbf7;
+            color: #2c332b;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #556b2f;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #333;
+            transition: 0.3s;
+            border: 1px solid #dcd8d0;
+            display: block;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #e67e22;
+            box-shadow: 0 5px 15px rgba(230, 126, 34, 0.2);
+        }
+
+        h2 {
+            margin: 0 0 10px 0;
+            color: #e67e22;
+            font-size: 1.2rem;
+        }
+
+        .severity {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .sev-high {
+            background: rgba(192, 57, 43, 0.1);
+            color: #c0392b;
+            border: 1px solid #c0392b;
+        }
+
+        .sev-med {
+            background: rgba(230, 126, 34, 0.1);
+            color: #e67e22;
+            border: 1px solid #e67e22;
+        }
+
+        .sev-low {
+            background: rgba(85, 107, 47, 0.1);
+            color: #556b2f;
+            border: 1px solid #556b2f;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="{% url 'dashboard' car_model=car_model %}"
+            style="color: #7f8c8d; text-decoration: none; font-weight: bold;">← Retour au Tableau de Bord</a>
+        <h1>Problèmes Identifiés: {{ part_name }}</h1>
+
+        <div class="grid">
+            {% for p in problems %}
+            <a href="{% url 'solution_list' car_model=car_model part_name=part_name problem_description=p.description %}"
+                class="card">
+                <h2>{{ p.description }}</h2>
+
+                {% if p.severity == "High" %}
+                <span class="severity sev-high">Gravité: Élevée</span>
+                {% elif p.severity == "Medium" %}
+                <span class="severity sev-med">Gravité: Moyenne</span>
+                {% else %}
+                <span class="severity sev-low">Gravité: Faible</span>
+                {% endif %}
+            </a>
+            {% empty %}
+            <p style="text-align: center; grid-column: 1/-1;">Aucun problème détecté pour cette pièce.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>

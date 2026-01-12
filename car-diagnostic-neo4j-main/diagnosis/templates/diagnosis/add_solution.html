@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter une Solution - Espace Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #fdfbf7;
+            color: #3e4a3d;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(75, 83, 32, 0.1);
+            border: 1px solid #dcd8d0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #556b2f;
+            text-transform: uppercase;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            background: #faf9f6;
+            border: 1px solid #ccc;
+            color: #333;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            transition: 0.3s;
+            outline: none;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 5px rgba(230, 126, 34, 0.3);
+        }
+
+        label {
+            margin-bottom: 8px;
+            display: block;
+            font-weight: bold;
+            color: #556b2f;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #e67e22;
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            background: #d35400;
+            transform: translateY(-2px);
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #999;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            color: #d35400;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Ajouter une Solution Pro</h1>
+        <p class="subtitle">Pour le problème : "{{ problem_description }}"</p>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <label>Nom du Mécanicien (Simulé)</label>
+            <select name="mechanic_name">
+                <option value="Ahmed">Ahmed Expert (Casablanca)</option>
+                <option value="Karim">Karim (Rabat)</option>
+                <option value="AutoFix Center">AutoFix Center (Marrakech)</option>
+                <option value="New Mechanic">Autre (Créer Nouveau)</option>
+            </select>
+
+            <label>Description de la Solution</label>
+            <textarea name="description" rows="4" placeholder="Ex: Remplacer le maître-cylindre..." required></textarea>
+
+            <label>Fourchette de Prix Estimée</label>
+            <input type="text" name="cost" placeholder="Ex: 1500 MAD - 2000 MAD" required>
+
+            <button type="submit" class="btn">Publier la Solution</button>
+        </form>
+        <a href="javascript:history.back()" class="back-link">← Annuler</a>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,171 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Espace Mécanicien - AutoDiag</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #fdfbf7;
+            color: #2c332b;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            color: #556b2f;
+            border-bottom: 2px solid #556b2f;
+            padding-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logout {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .logout:hover {
+            background: #d35400;
+            color: #fff;
+            border-color: #d35400;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #e67e22;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        h3 {
+            margin-top: 0;
+            color: #3e4a3d;
+        }
+
+        .request-item {
+            background: #f4f1ea;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+        }
+
+        .client-name {
+            font-weight: bold;
+            color: #e67e22;
+        }
+
+        .issue {
+            font-style: italic;
+            color: #7f8c8d;
+        }
+
+        .action-btn {
+            display: inline-block;
+            background: #556b2f;
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-top: 5px;
+            transition: 0.3s;
+        }
+
+        .action-btn:hover {
+            background: #3e4a3d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>
+            Espace Pro: {{ mechanic_name }}
+            <a href="{% url 'logout' %}" class="logout">Déconnexion</a>
+        </h1>
+
+        <div class="grid">
+
+            <div class="card">
+                <h3>💼 Demandes d'Intervention</h3>
+                <p style="color:#777; font-size: 0.9rem;">Nouvelles requêtes de clients à proximité.</p>
+
+                {% if pending_requests %}
+                {% for req in pending_requests %}
+                <div class="request-item" style="border-left: 5px solid #e67e22;">
+                    <div class="client-name">{{ req.client }} ({{ req.car }})</div>
+                    <div class="issue">"{{ req.issue }}"</div>
+                    <div style="font-size: 0.8rem; color: #666; margin: 5px 0;">Reçu: {{ req.date }}</div>
+                    <a href="{% url 'handle_request' request_id=req.id action='accept' %}"
+                        class="action-btn">Accepter</a>
+                    <a href="{% url 'handle_request' request_id=req.id action='refuse' %}" class="action-btn"
+                        style="background:#95a5a6;">Refuser</a>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>Aucune demande en attente.</p>
+                {% endif %}
+
+                <h4 style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px;">📜 Historique</h4>
+                {% if history_requests %}
+                {% for req in history_requests %}
+                <div class="request-item" style="opacity: 0.8;">
+                    <div class="client-name" style="color: #7f8c8d;">{{ req.client }} - <span
+                            style="font-weight:bold; color: {% if req.status == 'ACCEPTED' %}green{% else %}red{% endif %};">{{
+                            req.status }}</span></div>
+                    <div class="issue">{{ req.issue }}</div>
+                    <div style="font-size: 0.8rem; color: #999;">{{ req.date }}</div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p style="font-size: 0.9rem; color: #999;">Aucun historique.</p>
+                {% endif %}
+            </div>
+
+            <div class="card" style="border-color: #556b2f;">
+                <h3>🛠️ Base de Connaissances</h3>
+                <p>Partagez votre expertise et gagnez en visibilité.</p>
+                <a href="{% url 'mechanic_problem_select' %}" style="text-decoration: none;">
+                    <div
+                        style="text-align: center; padding: 15px; border: 2px dashed #556b2f; border-radius: 5px; cursor: pointer; color: #556b2f; font-weight: bold; background: #faf9f6; transition: 0.3s; margin-bottom: 10px;">
+                        + Ajouter une Solution
+                    </div>
+                </a>
+                <a href="{% url 'mechanic_solution_list' %}" style="text-decoration: none;">
+                    <div
+                        style="text-align: center; padding: 15px; border: 1px solid #d35400; border-radius: 5px; cursor: pointer; color: #d35400; font-weight: bold; background: #fff; transition: 0.3s;">
+                        👁️ Consulter Tout
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

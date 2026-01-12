@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Solutions pour {{ problem_description }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #fdfbf7;
+            color: #2c332b;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #556b2f;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .sub {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .columns {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .col {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .section-title {
+            color: #556b2f;
+            border-bottom: 2px solid #556b2f;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        .diy-title {
+            color: #d35400;
+            border-color: #d35400;
+        }
+
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #dcd8d0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .card h3 {
+            margin: 0 0 5px 0;
+            color: #3e4a3d;
+        }
+
+        .cost {
+            font-weight: bold;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .author {
+            font-size: 0.8rem;
+            color: #95a5a6;
+            text-align: right;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .expert-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .rating {
+            color: #e67e22;
+            font-weight: bold;
+        }
+
+        .btn {
+            background: #556b2f;
+            color: #fff;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #3e4a3d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="{% url 'problem_list' car_model=car_model part_name=part_name %}"
+            style="color: #999; text-decoration: none; font-weight: bold;">← Retour</a>
+        <h1>{{ problem_description }}</h1>
+        <p class="sub">Diagnostic: {{ car_model }} / {{ part_name }}</p>
+
+        <div class="columns">
+
+            <!-- DIY Column -->
+            <div class="col">
+                <h2 class="section-title diy-title">🛠️ Solutions DIY</h2>
+                {% for s in diy_solutions %}
+                <div class="card" style="border-left: 5px solid #d35400;">
+                    <h3>{{ s.solution }}</h3>
+                    <span class="cost">Coût: {{ s.cost }}</span>
+                </div>
+                {% empty %}
+                <p>Aucune solution DIY trouvée.</p>
+                {% endfor %}
+            </div>
+
+            <!-- Pro Column -->
+            <div class="col">
+                <h2 class="section-title">👨‍🔧 Solutions Pro</h2>
+                {% for s in pro_solutions %}
+                <div class="card" style="border-left: 5px solid #556b2f;">
+                    <h3>{{ s.solution }}</h3>
+                    <span class="cost">Est. Coût: {{ s.cost }}</span>
+                    {% if s.mechanic_name %}
+                    <div class="author">Posté par: {{ s.mechanic_name }}</div>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <p>Aucune solution pro listée.</p>
+                {% endfor %}
+            </div>
+
+            <!-- Experts Column -->
+            <div class="col">
+                <h2 class="section-title">🏆 Top Experts</h2>
+                {% for m in experts %}
+                <div class="card expert-card" style="background: #faf9f6;">
+                    <div>
+                        <h3>{{ m.name }}</h3>
+                        <div style="font-size: 0.85rem; color: #888;">📍 {{ m.location }}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div class="rating">★ {{ m.rating }}</div>
+                        <form action="{% url 'contact_mechanic' mechanic_name=m.name %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="message" value="Demande d'intervention rapide">
+                            <button type="submit" class="btn" style="margin-top: 5px; border:none; cursor:pointer; font-family: inherit; font-size: 0.9rem;">Demander Intervention</button>
+                        </form>
+                    </div>
+                </div>
+                {% empty %}
+                <p>Aucun expert trouvé.</p>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

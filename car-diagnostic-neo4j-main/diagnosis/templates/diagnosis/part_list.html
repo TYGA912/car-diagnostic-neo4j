@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Select a Part - {{ brand }} {{ car_model }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at top, #0a1a2f, #000);
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #00b4ff;
+            margin-bottom: 40px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb a {
+            color: #aaa;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: #fff;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: rgba(10, 20, 40, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 0 20px rgba(0, 180, 255, 0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            display: block;
+            color: inherit;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 180, 255, 0.3);
+        }
+
+        .card h3 {
+            color: #fff;
+            margin: 15px 0 0;
+        }
+
+        .icon-placeholder {
+            font-size: 3rem;
+            color: #00b4ff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="{% url 'car_list' %}">← Back to Cars</a>
+        </div>
+        <h1>Parts for {{ brand }} {{ car_model }}</h1>
+        <div class="grid">
+            {% for part in parts %}
+            <a href="{% url 'problem_list' car_model=car_model part_name=part.part_name %}" class="card">
+                <div class="icon-placeholder">⚙️</div>
+                <h3>{{ part.part_name }}</h3>
+            </a>
+            {% empty %}
+            <p>No parts found for this car.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>

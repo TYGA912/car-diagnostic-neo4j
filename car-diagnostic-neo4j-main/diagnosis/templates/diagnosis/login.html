@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion - AutoDiag</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #f4f1ea;
+            color: #3e4a3d;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-box {
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(75, 83, 32, 0.1);
+            width: 350px;
+            text-align: center;
+            border: 1px solid #dcd8d0;
+        }
+
+        h1 {
+            color: #556b2f;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: #faf9f6;
+            border: 1px solid #ccc;
+            color: #333;
+            border-radius: 5px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 5px rgba(230, 126, 34, 0.3);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #e67e22;
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            background: #d35400;
+            transform: translateY(-2px);
+        }
+
+        .error {
+            color: #c0392b;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-box">
+        <h1>Connexion</h1>
+        <p style="color:#777; margin-bottom: 30px;">Identifiez-vous pour accéder à votre espace.</p>
+
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+            <input type="password" name="password" placeholder="Mot de passe" required>
+            <button type="submit" class="btn">Se Connecter</button>
+        </form>
+
+        <div class="footer">
+            Comptes Démo: <br>
+            Conducteur: <b>driver</b> / <b>123</b><br>
+            Mécanicien: <b>meca</b> / <b>123</b>
+        </div>
+    </div>
+</body>
+
+</html>

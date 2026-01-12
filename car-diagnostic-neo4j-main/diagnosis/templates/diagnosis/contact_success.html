@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Succès</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #fdfbf7;
+            color: #3e4a3d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .success-box {
+            background: #fff;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid #dcd8d0;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #556b2f;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        p {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+
+        .icon {
+            font-size: 4rem;
+            color: #e67e22;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #556b2f;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #3e4a3d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="success-box">
+        <div class="icon">✓</div>
+        <h1>Demande Envoyée</h1>
+        <p>Votre message a bien été transmis à {{ mechanic_name }}. Il vous répondra bientôt.</p>
+        <a href="/diagnosis/" class="btn">Retour à l'accueil</a>
+    </div>
+</body>
+
+</html>

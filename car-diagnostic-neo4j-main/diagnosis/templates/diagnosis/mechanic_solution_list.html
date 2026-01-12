@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Base de Connaissances - Espace Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #fdfbf7;
+            color: #2c332b;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #556b2f;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .part-section {
+            margin-bottom: 40px;
+        }
+
+        .part-header {
+            background: #556b2f;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .solution-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .solution-card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #dcd8d0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .solution-card h3 {
+            margin: 0 0 5px 0;
+            color: #e67e22;
+            font-size: 1rem;
+        }
+
+        .prob-desc {
+            font-style: italic;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .sol-desc {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .meta {
+            font-size: 0.8rem;
+            color: #999;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #7f8c8d;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            color: #d35400;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="{% url 'mechanic_dashboard' %}" class="back-link">← Retour au Dashboard</a>
+        <h1>Base de Connaissances</h1>
+
+        {% for part in parts_data %}
+        <div class="part-section">
+            <div class="part-header">{{ part.name }}</div>
+            <div class="solution-list">
+                {% for item in part.solutions %}
+                <div class="solution-card">
+                    <div class="prob-desc">Problème: {{ item.problem }}</div>
+                    <h3>{{ item.solution }}</h3>
+                    <div class="sol-desc">{{ item.cost }}</div>
+                    <div class="meta">
+                        <span>Type: {{ item.type }}</span>
+                        <span>Par: {{ item.author }}</span>
+                    </div>
+                </div>
+                {% empty %}
+                <p style="padding: 10px; color: #888;">Aucune solution enregistrée.</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% empty %}
+        <p style="text-align: center;">Aucune donnée disponible.</p>
+        {% endfor %}
+    </div>
+</body>
+
+</html>

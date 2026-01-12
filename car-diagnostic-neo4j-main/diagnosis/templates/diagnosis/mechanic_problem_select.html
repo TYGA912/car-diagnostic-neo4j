@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sélectionner un Problème - Espace Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #fdfbf7;
+            color: #2c332b;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #556b2f;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #333;
+            transition: 0.3s;
+            border: 1px solid #dcd8d0;
+            display: block;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #e67e22;
+            box-shadow: 0 5px 15px rgba(230, 126, 34, 0.2);
+        }
+
+        h2 {
+            margin: 0 0 5px 0;
+            color: #e67e22;
+            font-size: 1.1rem;
+        }
+
+        .details {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background: #556b2f;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+            margin-top: 15px;
+        }
+
+        .btn:hover {
+            background: #3e4a3d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="{% url 'mechanic_dashboard' %}" style="color: #7f8c8d; text-decoration: none; font-weight: bold;">←
+            Retour au Dashboard</a>
+        <h1>Contribuer : Choisir un Problème</h1>
+
+        <div class="grid">
+            {% for p in problems %}
+            <div class="card">
+                <h2>{{ p.description }}</h2>
+                <div class="details">{{ p.car }} / {{ p.part }}</div>
+                <div style="font-size: 0.8rem; color: #999;">Gravité: {{ p.severity }}</div>
+
+                <a href="{% url 'add_solution' problem_description=p.description %}" class="btn">
+                    + Ajouter une Solution
+                </a>
+            </div>
+            {% empty %}
+            <p style="text-align: center; grid-column: 1/-1;">Aucun problème en attente de solution.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>
